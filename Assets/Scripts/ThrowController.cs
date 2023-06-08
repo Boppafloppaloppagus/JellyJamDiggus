@@ -200,7 +200,15 @@ public class ThrowController : MonoBehaviour
 
     private void HoldObject()
     {
-        if (holdingSomething)
+        if (interactableObject.activeSelf == false)
+        {
+            holdingSomething = false;
+        }
+        else if (interactableObjectInView = null)
+        {
+            interactableObject = null;
+        }
+        else
         {
             changeCrosshair(2);
             interactableObject.transform.position = attackPoint.transform.position;
@@ -211,10 +219,6 @@ public class ThrowController : MonoBehaviour
             {
                 holdingJelly = true;
             }
-        }
-        else if (interactableObjectInView = null)
-        {
-            interactableObject = null;
         }
     }
 

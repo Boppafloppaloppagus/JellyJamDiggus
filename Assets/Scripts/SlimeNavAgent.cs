@@ -62,19 +62,20 @@ public class SlimeNavAgent : MonoBehaviour
     //public bool takeAnL;
     bool fetchStart;
     bool carryingSomething;
-    bool foodStart;
+    [HideInInspector]
+    public bool foodStart;
     bool playerInZone;
     bool petStart;
     bool haveIBeenBeaned;
     bool haveIBeenCalled;
     bool pointSet;
 
+    bool isEating;
+
     public float force;
     float waitASec;
     float wait;
     float timer;
-
-    Vector3 lastPos;
 
     enum State
     {
@@ -119,9 +120,12 @@ public class SlimeNavAgent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!foodStart)
+        {
+            jellyAnimator.SetBool("Eating", false);
+        }
         //VRMODE
         SetupVRMode(useVRMode);
-
         //Debug.Log(slimeState);
         ApplyAudioWhenWalking();
         CheckForFetch();
@@ -158,10 +162,9 @@ public class SlimeNavAgent : MonoBehaviour
     //bad naming
     void ApplyAudioWhenWalking()
     {
-        //This is bad practice but rb and agent.isstopped is not realiable in the moment
-        if (Vector3.Distance(transform.position,lastPos) > 0.08f)
+        //worked! good catch from boppa!
+        if (agent.velocity.magnitude > 1f)
         {
-            lastPos = transform.position;
             if (!jellyAudioSource.isPlaying)
             {
 
@@ -217,29 +220,28 @@ public class SlimeNavAgent : MonoBehaviour
 
         }
         */
-        if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 1)
-            agent.destination = foodStuff.transform.position;
-        else if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 3)
-            foodStart = false;
-        else
+        if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 2)
         {
-            if (!jellyAudioSource.isPlaying||jellyAudioSource.clip == walkAudio)
+            agent.destination = foodStuff.transform.position;
+            if (!isEating&& !jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyEatAnimName))
             {
-                jellyAudioSource.clip = eatAudio;
-                jellyAudioSource.loop = false;
-                jellyAudioSource.Play();
+                jellyAnimator.Play("SeeFood");
             }
-            //Not a good fix it'll get bugged and i don't have the resources to see if it will work
-            if ((jellyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1||jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyIdleAnimName) || jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyWalkAnimName))&&!jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyEatAnimName))
-            {
-                //Change Here to Animation Name
-                jellyAnimator.Play(jellyEatAnimName);
-            }
-            foodStuff.SetActive(false);
+            isEating = true;
+
+        }
+        else if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 6)
+        {
             foodStart = false;
         }
+        else
+        {
+            
+            //Not a good fix it'll get bugged and i don't have the resources to see if it will work
+            jellyAnimator.SetBool("Eating", true);
+            isEating = false;
+        }
     }
-
     void Fetch()
     {
         ballStuff = interactableObject;
@@ -295,7 +297,6 @@ public class SlimeNavAgent : MonoBehaviour
 
     void GetPetNerd()
     {
-        Debug.Log("Congrats, you've pet the cube.");
         petStart = false;
         if (!jellyAudioSource.isPlaying) {
             jellyAudioSource.clip = petAudio;
