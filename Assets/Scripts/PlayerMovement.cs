@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
+    bool isSprinting;
 
     public float groundDrag;
 /*
@@ -23,9 +25,9 @@ public class PlayerMovement : MonoBehaviour
     public float crouchYScale;
     private float startYScale;
 */
-    [Header("Keybinds")]
+   // [Header("Keybinds")]
     //public KeyCode jumpKey = KeyCode.Space;
-    public KeyCode sprintKey = KeyCode.LeftShift;
+    //public KeyCode sprintKey = KeyCode.LeftShift;
     //public KeyCode crouchKey = KeyCode.LeftControl;
 
     [Header("SlopeHandling")]
@@ -85,10 +87,27 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
+    public void MoveInput(InputAction.CallbackContext context)
+    {
+        Vector2 move = context.ReadValue<Vector2>();
+        horizontalInput = move.x;
+        verticalInput = move.y;
+    }
+    public void SprintInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isSprinting = true;
+        }
+        if (context.canceled)
+        {
+            isSprinting = false;
+        }
+    }
     void MyInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        //horizontalInput = Input.GetAxisRaw("Horizontal");
+        //verticalInput = Input.GetAxisRaw("Vertical");
         /*
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
@@ -121,10 +140,14 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = crouchSpeed;
         }
         */
-        if (grounded && Input.GetKey(sprintKey))
+        if (grounded && isSprinting)
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
+        }else
+        {
+            state = MovementState.walking;
+            moveSpeed = walkSpeed;
         }
         /*
         else if (grounded)

@@ -21,6 +21,7 @@ public class SlimeNavAgent : MonoBehaviour
     bool holdingJelly;
     bool petTimeNow;
     bool calledJelly;
+    bool holdingSomething;
     #endregion
     public GameObject playerStuff;
     public GameObject ballStuff;
@@ -134,7 +135,7 @@ public class SlimeNavAgent : MonoBehaviour
         CheckForCall();
         IsPlayerInZone();
         SetState();
-        
+
         switch (slimeState)
         {
             case State.MuckAbout:
@@ -172,16 +173,27 @@ public class SlimeNavAgent : MonoBehaviour
                 jellyAudioSource.loop = true;
                 jellyAudioSource.Play();
             }
-            jellyAnimator.SetBool("IsWalking",true);
+            if (isEating)
+            {
+                SetWalkingTree(true, 1);
+            }
+            else
+            {
+                SetWalkingTree(true, 0);
+            }
         }
         else if (jellyAudioSource.isPlaying)
         {
             jellyAudioSource.loop = false;
-            jellyAnimator.SetBool("IsWalking", false);
+            SetWalkingTree(false,0);
         }
-        
-    }
 
+    }
+    void SetWalkingTree(bool value, float blendTreeValue = 0)
+    {
+        jellyAnimator.SetBool("IsWalking", value);
+        jellyAnimator.SetFloat("Trigger", blendTreeValue);
+    }
     //methods associated with states
     void MuckAbout()
     {
@@ -206,6 +218,7 @@ public class SlimeNavAgent : MonoBehaviour
 
     void Eat()
     {
+        
         /*
         if (throwController.holdingSomething)
         {
@@ -223,10 +236,10 @@ public class SlimeNavAgent : MonoBehaviour
         if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 2)
         {
             agent.destination = foodStuff.transform.position;
-            if (!isEating&& !jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyEatAnimName))
-            {
-                jellyAnimator.Play("SeeFood");
-            }
+            //  if (!isEating&& !jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyEatAnimName))
+            //   {
+            //    jellyAnimator.Play("SeeFood");
+            // }
             isEating = true;
 
         }
@@ -236,11 +249,12 @@ public class SlimeNavAgent : MonoBehaviour
         }
         else
         {
-            
-            //Not a good fix it'll get bugged and i don't have the resources to see if it will work
-            jellyAnimator.SetBool("Eating", true);
-            isEating = false;
-        }
+            if (!holdingSomething) {
+                //Not a good fix it'll get bugged and i don't have the resources to see if it will work
+                jellyAnimator.SetBool("Eating", true);
+                isEating = false;
+            }
+            }
     }
     void Fetch()
     {
@@ -298,7 +312,8 @@ public class SlimeNavAgent : MonoBehaviour
     void GetPetNerd()
     {
         petStart = false;
-        if (!jellyAudioSource.isPlaying) {
+        if (!jellyAudioSource.isPlaying)
+        {
             jellyAudioSource.clip = petAudio;
             jellyAudioSource.loop = false;
             jellyAudioSource.Play();
@@ -308,7 +323,7 @@ public class SlimeNavAgent : MonoBehaviour
             //Change Here to Animation Name
             jellyAnimator.Play(jellyPetAnimName);
         }
-       
+
     }
 
     void Called()
@@ -408,6 +423,7 @@ public class SlimeNavAgent : MonoBehaviour
             holdingJelly = vrThrowController.isHoldingJelly;
             petTimeNow = vrThrowController.petTimeNow;
             calledJelly = vrThrowController.calledJelly;
+            holdingSomething = vrThrowController.isGrabbing;
         }
         else
         {
@@ -416,6 +432,7 @@ public class SlimeNavAgent : MonoBehaviour
             holdingJelly = throwController.holdingJelly;
             petTimeNow = throwController.petTimeNow;
             calledJelly = throwController.calledJelly;
+            holdingSomething = throwController.holdingSomething;
         }
     }
 

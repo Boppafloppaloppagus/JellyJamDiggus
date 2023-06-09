@@ -1,14 +1,16 @@
     using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
     public float sensX;
     public float sensY;
-
+    
     public Transform orientation;
 
+    Vector2 movePos;
     float xRotation;
     float yRotation;
 
@@ -20,10 +22,14 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame
+    public void CameraInput(InputAction.CallbackContext context)
+    {
+        movePos = context.ReadValue<Vector2>();
+    }
     void Update()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        float mouseX = movePos.x * Time.deltaTime * sensX;
+        float mouseY = movePos.y * Time.deltaTime * sensY;
         yRotation += mouseX;
         xRotation -= mouseY;
 

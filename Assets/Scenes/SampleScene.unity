@@ -5022,8 +5022,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab9ab208e3a56a94e90774cf64433ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 400
-  sensY: 400
+  sensX: 50
+  sensY: 50
   orientation: {fileID: 432390887}
 --- !u!1001 &963798683
 PrefabInstance:
@@ -6765,6 +6765,7 @@ GameObject:
   - component: {fileID: 1278890102}
   - component: {fileID: 1278890104}
   - component: {fileID: 1278890103}
+  - component: {fileID: 1278890105}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -6808,7 +6809,6 @@ MonoBehaviour:
   walkSpeed: 4
   sprintSpeed: 10
   groundDrag: 5
-  sprintKey: 304
   maxSlopeAngle: 0
   playerHeight: 2
   whatIsGround:
@@ -6859,10 +6859,8 @@ MonoBehaviour:
   attackPoint: {fileID: 1790827898}
   objectThrow: {fileID: 4456179912831991526, guid: 2003666ef7865e044a6a2fb4610d0546, type: 3}
   throwCooldown: 0
-  throwKey: 323
-  dropKey: 324
-  throwForce: 10
-  throwUpwardForce: 10
+  throwForce: 8
+  throwUpwardForce: 5
   playerRb: {fileID: 1278890103}
   pickupRange: 2
   interactableObjectMask:
@@ -6886,6 +6884,116 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1a5f6e28541590640812ee253de4511b, type: 3}
   - {fileID: 8300000, guid: ed7c993959f861e459cad98dfe187b3f, type: 3}
   - {fileID: 8300000, guid: 3c90034c742572f4eae6697792bc3ea1, type: 3}
+--- !u!114 &1278890105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278890100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 7d676ffd3c7f2f74c960205e4c4bcabc, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1278890102}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: MoveInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 152e6390-c1a3-4b34-b59e-dad9bf7daae0
+    m_ActionName: Player/Move[/DualShock4GamepadHID/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1278890102}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: SprintInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0cf5878a-0d70-4ace-ad51-1b36bae93d2b
+    m_ActionName: Player/Sprint[/Keyboard/shift,/DualShock4GamepadHID/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1278890104}
+        m_TargetAssemblyTypeName: ThrowController, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a7417c60-5d2b-4826-9579-df0ce11fd08c
+    m_ActionName: Player/Interact[/Mouse/leftButton,/DualShock4GamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1278890104}
+        m_TargetAssemblyTypeName: ThrowController, Assembly-CSharp
+        m_MethodName: Release
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a35c79e1-c678-4047-aea9-557c7359c663
+    m_ActionName: Player/Release[/Mouse/rightButton,/DualShock4GamepadHID/buttonEast]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 963194229}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: CameraInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2f71385f-5132-4b96-9f4b-27f8cbc01847
+    m_ActionName: Player/MoveCamera[/Mouse/delta]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1284116180
 GameObject:
   m_ObjectHideFlags: 0
@@ -21588,7 +21696,7 @@ Animator:
   m_GameObject: {fileID: 8641621969815359342}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a859aea6f30e9c14db6610c6b7b45337, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6176275b46b7faa4586d55c49b028c30, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

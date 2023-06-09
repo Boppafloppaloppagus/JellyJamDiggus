@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ThrowController : MonoBehaviour
@@ -14,8 +15,10 @@ public class ThrowController : MonoBehaviour
     public float throwCooldown;
 
     [Header("Throwing")]
-    public KeyCode throwKey = KeyCode.Mouse0;
-    public KeyCode dropKey = KeyCode.Mouse1;
+    bool isInteracting;
+    bool isReleasing;
+    //public KeyCode throwKey = KeyCode.Mouse0;
+    //public KeyCode dropKey = KeyCode.Mouse1;
     public float throwForce;
     public float throwUpwardForce;
 
@@ -66,28 +69,30 @@ public class ThrowController : MonoBehaviour
             HoldObject();
 
 
-        if (holdingSomething && Input.GetKeyDown(throwKey)) //&& readyToThrow)
+        if (holdingSomething && isInteracting) //&& readyToThrow)
         {
             Throw();
+            isInteracting = false;  
         }
-        else if (Input.GetKeyDown(throwKey)) //&& readyToThrow)
+        else if (isInteracting) //&& readyToThrow)
         {
             Pickup();
+            isInteracting = false;
         }
-        if (holdingSomething && Input.GetKeyDown(dropKey))
+        if (holdingSomething && isReleasing)
         {
             holdingSomething = false;
             holdingJelly = false;
+            isReleasing = false;
         }
-        else if (Input.GetKey(dropKey))
+        else if (isReleasing)
         {
 
             if (Physics.Raycast(cam.position, cam.forward, out interactableInfo, pickupRange, jellyLayerMask) && interactableInfo.collider.gameObject.tag == "Jelly")
             {
-                Debug.Log("Raycast Hit");
                 PetTheGoodBoi();
             }
-            else if(Input.GetKeyDown(dropKey))
+            else if(isReleasing)
             {
                 if (audioIndex > whistleClips.Length - 1)
                 {
@@ -100,12 +105,14 @@ public class ThrowController : MonoBehaviour
                     audioIndex++;
                     CallTheGoodBoi();
                 }
+                isReleasing = false;
             }
         }
         else
         {
             petTimeNow = false;
             calledJelly = false;
+            isReleasing = false;
         }
 
 
@@ -121,6 +128,30 @@ public class ThrowController : MonoBehaviour
      * 
      * 
      */
+    #region Input System
+    public void Interact(InputAction.CallbackContext context)
+    {
+       if (context.started)
+        {
+            isInteracting = true;
+        }
+        if (context.canceled)
+        {
+            isInteracting = false;
+        }
+    }
+    public void Release(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isReleasing = true;
+        }
+        if (context.canceled)
+        {
+            isReleasing = false;
+        }
+    }
+    #endregion
     private void Throw()
     {
         //readyToThrow = false;
@@ -146,6 +177,7 @@ public class ThrowController : MonoBehaviour
             forceDirection = (hit.point - attackPoint.position).normalized;
         }
         */
+        projectileRb.velocity = Vector3.zero ;
         Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce + playerRb.velocity;
         projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
 
