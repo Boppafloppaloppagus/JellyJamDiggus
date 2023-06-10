@@ -186,17 +186,6 @@
                 },
                 {
                     "name": "",
-                    "id": "5be42288-c8e0-49e5-864f-ee22c4806598",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MoveCamera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "88de773a-34b2-4813-9cee-35cb73fec6d5",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
