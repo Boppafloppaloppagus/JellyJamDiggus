@@ -245,6 +245,7 @@ public class ThrowController : MonoBehaviour
             changeCrosshair(2);
             interactableObject.transform.position = attackPoint.transform.position;
             interactableObject.transform.rotation = attackPoint.transform.rotation;
+            interactableObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             if (interactableObject.tag == "Fetchable")
                 holdingSomethingFetchable = true;
             else if (interactableObject.tag == "Jelly")

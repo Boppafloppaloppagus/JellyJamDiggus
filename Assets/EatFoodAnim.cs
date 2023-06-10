@@ -8,12 +8,13 @@ public class EatFoodAnim : MonoBehaviour
     public void EatFood()
     {
         jellyBehavior.foodStuff.SetActive(false);
-        jellyBehavior.foodStart = false;
-        if (!jellyBehavior.jellyAudioSource.isPlaying || jellyBehavior.jellyAudioSource.clip == jellyBehavior.walkAudio)
+      
+        if ((!jellyBehavior.jellyAudioSource.isPlaying || jellyBehavior.jellyAudioSource.clip == jellyBehavior.walkAudio)&&jellyBehavior.foodStart)
         {
             jellyBehavior.jellyAudioSource.clip = jellyBehavior.eatAudio;
             jellyBehavior.jellyAudioSource.loop = false;
             jellyBehavior.jellyAudioSource.Play();
         }
+        jellyBehavior.foodStart = false;
     }
 }

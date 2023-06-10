@@ -23,6 +23,8 @@ public class SlimeNavAgent : MonoBehaviour
     bool calledJelly;
     bool holdingSomething;
     #endregion
+    
+   
     public GameObject playerStuff;
     public GameObject ballStuff;
     public GameObject foodStuff;
@@ -38,13 +40,16 @@ public class SlimeNavAgent : MonoBehaviour
     public string jellyIdleAnimName;
     public string jellyEatAnimName;
     public string jellyPetAnimName;
+    #region Sound
 
     [Header("Sound")]
     public AudioSource jellyAudioSource;
     public AudioClip eatAudio;
-    public AudioClip petAudio;
+    public AudioClip[] petAudios;
     public AudioClip walkAudio;
 
+
+    #endregion
     Rigidbody rb;
 
     public Transform[] palmTrees;
@@ -72,6 +77,7 @@ public class SlimeNavAgent : MonoBehaviour
     bool pointSet;
 
     bool isEating;
+
 
     public float force;
     float waitASec;
@@ -125,6 +131,10 @@ public class SlimeNavAgent : MonoBehaviour
         {
             jellyAnimator.SetBool("Eating", false);
         }
+        if (slimeState != State.Pet)
+        {
+            agent.isStopped = false;
+        }
         //VRMODE
         SetupVRMode(useVRMode);
         //Debug.Log(slimeState);
@@ -140,6 +150,7 @@ public class SlimeNavAgent : MonoBehaviour
         {
             case State.MuckAbout:
                 MuckAbout();
+                LookAtPlayerInRange(6,3);
                 //jellySkin.material.SetColor("_Color", new Color(1, 1, 1, 1));
                 break;
             case State.Fetch:
@@ -149,6 +160,7 @@ public class SlimeNavAgent : MonoBehaviour
                 Eat();
                 break;
             case State.Pet:
+                LookAtPlayerInRange(6, 3);
                 GetPetNerd();
                 break;
             case State.Called:
@@ -215,7 +227,14 @@ public class SlimeNavAgent : MonoBehaviour
         }
         //Debug.Log(agent.destination);
     }
-
+    void LookAtPlayerInRange(float distance,float speed)
+    {
+        if (Vector3.Distance(playerStuff.transform.position,transform.position) < distance&&!jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyWalkAnimName))
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(playerStuff.transform.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, speed * Time.deltaTime);
+        }
+    }
     void Eat()
     {
         
@@ -233,24 +252,19 @@ public class SlimeNavAgent : MonoBehaviour
 
         }
         */
-        if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 2)
+        if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 1)
         {
             agent.destination = foodStuff.transform.position;
-            //  if (!isEating&& !jellyAnimator.GetCurrentAnimatorStateInfo(0).IsName(jellyEatAnimName))
-            //   {
-            //    jellyAnimator.Play("SeeFood");
-            // }
             isEating = true;
 
         }
-        else if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 6)
+        else if (Vector3.Distance(this.transform.position, foodStuff.transform.position) > 3)
         {
             foodStart = false;
         }
         else
         {
             if (!holdingSomething) {
-                //Not a good fix it'll get bugged and i don't have the resources to see if it will work
                 jellyAnimator.SetBool("Eating", true);
                 isEating = false;
             }
@@ -311,12 +325,19 @@ public class SlimeNavAgent : MonoBehaviour
 
     void GetPetNerd()
     {
+        agent.isStopped = true;
         petStart = false;
-        if (!jellyAudioSource.isPlaying)
+        if (!jellyAudioSource.isPlaying&&canPerform)
         {
-            jellyAudioSource.clip = petAudio;
+            AudioClip clip = petAudios[Random.Range(0, petAudios.Length)];
+           while (jellyAudioSource.clip == clip)
+            {
+                clip = petAudios[Random.Range(0, petAudios.Length)];
+            }
+            jellyAudioSource.clip = clip;
             jellyAudioSource.loop = false;
             jellyAudioSource.Play();
+            StartCoroutine(WaitJellySound(2));
         }
         if (jellyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
@@ -324,6 +345,13 @@ public class SlimeNavAgent : MonoBehaviour
             jellyAnimator.Play(jellyPetAnimName);
         }
 
+    }
+    bool canPerform = true;
+    IEnumerator WaitJellySound(float seconds)
+    {
+        canPerform = false;
+        yield return new WaitForSeconds(seconds);
+        canPerform = true;
     }
 
     void Called()

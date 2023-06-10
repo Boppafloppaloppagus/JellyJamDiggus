@@ -2038,7 +2038,12 @@ MonoBehaviour:
   jellyPetAnimName: PetSample
   jellyAudioSource: {fileID: 365519971}
   eatAudio: {fileID: 8300000, guid: f7a4dbcae6c4b0a42840aa5b6d6928ef, type: 3}
-  petAudio: {fileID: 8300000, guid: 1ed8147eae552704fb9ae81c2afdcd87, type: 3}
+  petAudios:
+  - {fileID: 8300000, guid: 27b34caf3c120d449b29403b11a8cead, type: 3}
+  - {fileID: 8300000, guid: 583cbf4a421590143a5e1ae8f26b1cec, type: 3}
+  - {fileID: 8300000, guid: 445c87a321d9be946bd5ab0e7530c66f, type: 3}
+  - {fileID: 8300000, guid: f563d3a21f7111445b8f971ee1bbfdd1, type: 3}
+  - {fileID: 8300000, guid: 29582037f6843b643a183d67d5f5dfe3, type: 3}
   walkAudio: {fileID: 8300000, guid: ff7c47f6840b42b409c845fe6b408c25, type: 3}
   palmTrees:
   - {fileID: 0}
@@ -4797,7 +4802,7 @@ GameObject:
   - component: {fileID: 908439598}
   - component: {fileID: 908439597}
   m_Layer: 0
-  m_Name: Framerate
+  m_Name: FramerateSetter
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4824,7 +4829,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908439596}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.68, y: 4.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5514,7 +5519,7 @@ RectTransform:
   m_GameObject: {fileID: 1069321498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 916009140}
@@ -5522,7 +5527,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -11.5, y: -6.487503}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1069321500
@@ -6690,7 +6695,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
+  m_Radius: 6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1251490730
 Transform:
@@ -6749,16 +6754,16 @@ RectTransform:
   m_GameObject: {fileID: 1269729285}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 916009140}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.47766665, y: 0.47500002}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 3.9, y: 0}
+  m_SizeDelta: {x: 390.94, y: 380}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1269729287
 MonoBehaviour:
@@ -6773,7 +6778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -20520,7 +20525,7 @@ RectTransform:
   m_GameObject: {fileID: 1937942247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 916009140}
@@ -20528,7 +20533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -11.5, y: -6.487503}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1937942249
