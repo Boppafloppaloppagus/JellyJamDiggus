@@ -82,6 +82,7 @@ public class ThrowController : MonoBehaviour
         if (holdingSomething && isReleasing)
         {
             holdingSomething = false;
+            holdingSomethingFetchable = false;
             holdingJelly = false;
             isReleasing = false;
         }
